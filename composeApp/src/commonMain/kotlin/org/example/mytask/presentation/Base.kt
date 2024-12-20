@@ -191,7 +191,7 @@ fun CompactAndMediumScreen(
                         }
                     }
                     Text(
-                        taskViewModel.authUser.value.email.ifEmpty { "Anonymous" },
+                        if (taskViewModel.authUser.value.email.isBlank() || taskViewModel.authUser.value.email == "null") taskViewModel.authUser.value.email else "Anonymous",
                         Modifier.align(Alignment.CenterHorizontally).padding(bottom = 4.dp),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary
@@ -308,7 +308,7 @@ fun ExpandedScreen(
             PermanentDrawerSheet(Modifier.width(200.dp)) {
                 Column(Modifier.padding(vertical = 16.dp)) {
                     Text(
-                        taskViewModel.authUser.value.email.ifEmpty { "Anonymous" },
+                        if (taskViewModel.authUser.value.email.isBlank() || taskViewModel.authUser.value.email == "null") taskViewModel.authUser.value.email else "Anonymous",
                         Modifier.align(Alignment.CenterHorizontally).padding(bottom = 4.dp),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary
