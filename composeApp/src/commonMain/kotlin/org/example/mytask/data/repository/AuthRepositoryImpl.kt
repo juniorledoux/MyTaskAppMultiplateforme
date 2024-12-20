@@ -55,14 +55,16 @@ class AuthRepositoryImpl(
                         .where { "email".equalTo(email) }
                         .get()
                         .documents.isNotEmpty()
-
-                    if (userExists) {
+                    if (!userExists) {
+                        var newUserCredential = EmailAuthProvider.credential(email, password)
+                        newUserCredential = firebaseModule.auth()
+                            .createUserWithEmailAndPassword(email, password).credential
+                            ?: newUserCredential
+                        firebaseModule.auth().currentUser?.linkWithCredential(newUserCredential)
+                    } else {
                         // User data exists, link to anonymous account
                         val credential = EmailAuthProvider.credential(email, password)
-                        firebaseModule.auth().currentUser!!.linkWithCredential(credential)
-                    } else {
-                        // User data doesn't exist, create new account
-                        firebaseModule.auth().createUserWithEmailAndPassword(email, password)
+                        firebaseModule.auth().currentUser?.linkWithCredential(credential)
                     }
                 }
                 // Handle exceptions
